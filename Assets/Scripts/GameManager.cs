@@ -5,35 +5,100 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager instance;
-  
+    public static GameManager instance; //el game manager controla las variables del juego y es accesible a todos
+    private float time;
+    private int points, hits, currentAdd;
+    private KeyCode Esc = KeyCode.Escape;
+    //public AudioClip SelectClip;
 
+
+    public enum GameManagerVariables { TIME, POINTS };//para facilitar el codigo
 
     private void Awake()
     {
-        //SINGLETON
-        if (!instance) //si instance no tiene informacion
+        if (!instance)
         {
-            instance = this; //instance se asigna a este objeto
-            DontDestroyOnLoad(gameObject); // se indica que esre obj no se destruya con la carga de escenas
+            instance = this;//se instancia el objecto
+            DontDestroyOnLoad(gameObject);// no se destruye entre cargas
         }
         else
         {
-            Destroy(gameObject); // se destruye el gameobject, para que no haya dos o mas gms en el juego
+            Destroy(gameObject);
         }
     }
-    // Start is called before the first frame update
-    void Start()
-    {
 
-    }
 
-    // Update is called once per frame
     void Update()
     {
-       
+        time += Time.deltaTime;
+        if (Input.GetKeyDown(Esc))
+        {
+            SceneManager.LoadScene("Menu");
+            AudioManager.instance.ClearAudio();
+        }
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            points = 0;
+            time = 0;
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            AudioManager.instance.ClearAudio();
+        }
+        if (Input.GetKeyDown(KeyCode.Backspace))
+        {
+            ExitGame();
+        }
     }
-    
-   
+
+    // getter
+    public float GetTime()
+    {
+        return time;
+    }
+
+    // getter
+    public int GetPoints()
+    {
+        return points;
+    }
+
+
+    public int GetHit()
+    {
+        return hits;
+    }
+
+    public void SetAdd(int value)
+    {
+        currentAdd = value;
+    }
+
+    public void SetHit(int value)
+    {
+        hits = value;
+    }
+
+
+
+    // setter
+    public void SetPoints(int value)
+    {
+        points = value;
+    }
+
+    public void LoadScene(string sceneName)
+    {
+        time = 0;
+        SceneManager.LoadScene(sceneName);
+        AudioManager.instance.ClearAudio();
+        points = 0;
+    }
+
+    public void ExitGame()
+    {
+        Debug.Log("EXIT");
+        Application.Quit();
+    }
+
+
 }
 
