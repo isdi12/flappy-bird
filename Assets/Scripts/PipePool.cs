@@ -10,7 +10,7 @@ public class PipePool : MonoBehaviour
     [SerializeField] private int poolSize = 10; // Ajusta según necesites
 
     private List<GameObject> pipes;
-
+    public bool shouldExpand = false; 
     void Awake()
     {
         if (Instance == null)
@@ -26,9 +26,7 @@ public class PipePool : MonoBehaviour
         pipes = new List<GameObject>();
         for (int i = 0; i < poolSize; i++)
         {
-            GameObject obj = Instantiate(pipePrefab);
-            obj.SetActive(false);
-            pipes.Add(obj);
+            AddGameObject();
         }
     }
 
@@ -52,5 +50,30 @@ public class PipePool : MonoBehaviour
     public void ReturnPipe(GameObject pipe)
     {
         pipe.SetActive(false);
+    }
+
+    GameObject AddGameObject()
+    {
+
+        GameObject pipe = Instantiate(pipePrefab);
+        pipe.SetActive(false);
+        pipes.Add(pipe);
+
+        return pipe ; 
+    }
+    public GameObject GimmeInactiveGameObject()
+    {
+        foreach (GameObject obj in pipes) // para recorrer la lista 
+        {
+            if (!obj.activeSelf) // si el objeto no esta activo
+            {
+                return obj;
+            }
+        }
+        if (shouldExpand) // si queremos expandir la pool 
+        {
+            return AddGameObject();
+        }
+        return null;
     }
 }

@@ -1,12 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
 
 public class BirdController : MonoBehaviour
 {
     public float jumpForce, rotationSpeed;
     public Animator animator;
-    public AudioClip jumpSound, hitSound;
+    public AudioClip jumpSound, hitSound, pointSound;
  
     private Rigidbody rb;
 
@@ -48,12 +49,23 @@ public class BirdController : MonoBehaviour
 
     public void Hit()
     {
-
         GameManager.instance.SetHit(0);
-        GameManager.instance.SetAdd(Random.Range(3, 5));
-
     }
 
-    
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if (!other.GetComponent<PipeMovement>())
+        {
+            GameManager.instance.SetPoints(GameManager.instance.GetPoints() + 1);// sumamos los puntos
+            AudioManager.instance.PlayAudio(pointSound, "pointSound", false, 0.08f);
+        }
+        if (other.GetComponent<PipeMovement>())
+        {
+            GameManager.instance.SetHit(GameManager.instance.GetHit() + 1); // sumamos los choques 
+            AudioManager.instance.PlayAudio(hitSound, "hitSound", false, 0.08f);
+            GameManager.instance.LoadScene("Juego");
+        }
+       
+    }
 }

@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class PipeSpawner : MonoBehaviour
 {
-    public float spawnRate = 2f;
-    public float heightOffset = 3f;
+    public float spawnRate ;
     private float nextSpawn = 0f;
+       public float lowestPoint = 3;
+      public  float highestPoint = 3;
 
     void Update()
     {
@@ -19,19 +20,17 @@ public class PipeSpawner : MonoBehaviour
 
     void SpawnPipe()
     {
-        float lowestPoint = -3;
-        float highestPoint = 3;
         float height = Random.Range(lowestPoint, highestPoint);
 
         // Usar la pool para obtener una tubería
         GameObject pipe = PipePool.Instance.GetPipe();
-        pipe.transform.position = new Vector3(transform.position.x, height, 0);
+        pipe.transform.localPosition = new Vector3(transform.localPosition.x, height, 0);
 
         // Aseguramos de que el script PipeMovement esté en el prefab de la tubería para moverla
         PipeMovement pipeMovement = pipe.GetComponent<PipeMovement>();
         if (pipeMovement != null)
         {
-            pipeMovement.ResetPosition();
+            //pipeMovement.ResetPosition();
         }
     }
 }
