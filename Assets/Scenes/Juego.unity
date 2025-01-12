@@ -191,9 +191,9 @@ MonoBehaviour:
   jumpForce: 5
   rotationSpeed: 0
   animator: {fileID: 0}
-  jumpSound: {fileID: 0}
-  hitSound: {fileID: 0}
-  pointSound: {fileID: 0}
+  jumpSound: {fileID: 8300000, guid: f8f29e660b31e824ca511d78e2876014, type: 3}
+  hitSound: {fileID: 8300000, guid: 48117b537771c704883c14aaa58cb223, type: 3}
+  pointSound: {fileID: 8300000, guid: ab75dd02e82c3dc4fad2ac10895db0da, type: 3}
 --- !u!54 &464306086
 Rigidbody:
   m_ObjectHideFlags: 0
